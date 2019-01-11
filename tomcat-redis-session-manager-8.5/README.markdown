@@ -60,8 +60,8 @@ Usage
 
 Add the following into your Tomcat context.xml (or the context block of the server.xml if applicable.)
 
-    <Valve className="com.orangefunction.tomcat.redissessions.RedisSessionHandlerValve" />
-    <Manager className="com.orangefunction.tomcat.redissessions.RedisSessionManager"
+    <Valve className="RedisSessionHandlerValve" />
+    <Manager className="RedisSessionManager"
              host="localhost" <!-- optional: defaults to "localhost" -->
              port="6379" <!-- optional: defaults to "6379" -->
              database="0" <!-- optional: defaults to "0" -->

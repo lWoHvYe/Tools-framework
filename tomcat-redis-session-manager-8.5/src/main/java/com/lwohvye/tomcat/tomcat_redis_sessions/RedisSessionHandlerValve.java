@@ -1,6 +1,5 @@
-package com.orangefunction.tomcat.redissessions;
+package com.lwohvye.tomcat.tomcat_redis_sessions;
 
-import org.apache.catalina.Session;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;

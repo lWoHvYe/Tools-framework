@@ -1,8 +1,6 @@
-package com.orangefunction.tomcat.redissessions;
+package com.lwohvye.tomcat.tomcat_redis_sessions;
 
 import org.apache.catalina.util.CustomObjectInputStream;
-
-import javax.servlet.http.HttpSession;
 
 import java.util.Enumeration;
 import java.util.HashMap;

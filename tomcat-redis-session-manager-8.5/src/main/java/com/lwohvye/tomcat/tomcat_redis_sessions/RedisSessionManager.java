@@ -1,10 +1,7 @@
-package com.orangefunction.tomcat.redissessions;
+package com.lwohvye.tomcat.tomcat_redis_sessions;
 
 import org.apache.catalina.*;
 import org.apache.catalina.session.ManagerBase;
-
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.apache.commons.pool2.impl.BaseObjectPoolConfig;
 
 import redis.clients.jedis.util.Pool;
 import redis.clients.jedis.JedisPool;
@@ -15,7 +12,6 @@ import redis.clients.jedis.Protocol;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Set;
 import java.util.EnumSet;
@@ -47,12 +43,12 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
 
     private final Log log = LogFactory.getLog(RedisSessionManager.class);
 
-//    redis服务器地址
+//    redis server address
     protected String host = "192.168.120.110";
-//    redis端口号
+//    redis port
     protected int port = 6379;
     protected int database = 0;
-//    redis连接密码
+//    redis password
     protected String password = "redis";
     protected int timeout = Protocol.DEFAULT_TIMEOUT;
     protected String sentinelMaster = null;
@@ -70,7 +66,7 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
 
     protected static String name = "RedisSessionManager";
 
-    protected String serializationStrategyClass = "com.orangefunction.tomcat.redissessions.JavaSerializer";
+    protected String serializationStrategyClass = "JavaSerializer";
 
     protected EnumSet<SessionPersistPolicy> sessionPersistPoliciesSet = EnumSet.of(SessionPersistPolicy.DEFAULT);
 
