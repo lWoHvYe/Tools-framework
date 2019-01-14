@@ -12,7 +12,7 @@ The manager relies on the native expiration capability of Redis to expire keys f
 
 Data stored in the session must be Serializable.
 
-This project changed from https://github.com/jcoleman/tomcat-redis-session-manager ,edit for tomcat8.5 or later
+This project changed from https://github.com/jcoleman/tomcat-redis-session-manager ,edit for tomcat 8.5 or later
 
 Tomcat Versions
 ---------------
