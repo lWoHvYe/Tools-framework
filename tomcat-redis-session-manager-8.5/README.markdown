@@ -12,6 +12,7 @@ The manager relies on the native expiration capability of Redis to expire keys f
 
 Data stored in the session must be Serializable.
 
+This project changed from https://github.com:jcoleman/tomcat-redis-session-manager ,edit for tomcat8.5 or later
 
 Tomcat Versions
 ---------------
@@ -33,9 +34,9 @@ Usage
 
 Add the following into your Tomcat context.xml (or the context block of the server.xml if applicable.)
 
-    <Valve className="com.orangefunction.tomcat.redissessions.RedisSessionHandlerValve" />
-    <Manager className="com.orangefunction.tomcat.redissessions.RedisSessionManager"
-             host="redis-ip" <!-- optional: defaults to "localhost",setting in   com.orangefunction.tomcat.redissessions.RedisSessionManager.jar -->
+    <Valve className="com.lwohvye.tomcat.tomcat_redis_sessions.RedisSessionHandlerValve" />
+    <Manager className="com.lwohvye.tomcat.tomcat_redis_sessions.RedisSessionManager"
+             host="redis-ip" <!-- optional: defaults to "localhost",setting in   com.lwohvye.tomcat.tomcat_redis_sessions.RedisSessionManager.jar -->
              port="6379" <!-- optional: defaults to "6379" -->
              database="0" <!-- optional: defaults to "0" -->
              maxInactiveInterval="60" <!-- optional: defaults to "60" (in seconds) -->

@@ -2,8 +2,8 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-group = 'com.orangefunction'
-version = '2.0.0'
+group = 'com.lwohvye.tomcat'
+version = '8.5.0'
 
 repositories {
   mavenCentral()
@@ -61,20 +61,20 @@ uploadArchives {
       //}
 
       pom.project {
-        name 'tomcat-redis-session-manager'
+        name 'tomcat-redis-session-manager-8.5'
         packaging 'jar'
         description 'Tomcat Redis Session Manager is a Tomcat extension to store sessions in Redis'
-        url 'https://github.com/jcoleman/tomcat-redis-session-manager'
+        url 'https://github.com/lWoHvYe/Tools-framework/tree/master/tomcat-redis-session-manager-8.5'
 
         issueManagement {
-          url 'https://github.com:jcoleman/tomcat-redis-session-manager/issues'
+          url 'https://github.com/lWoHvYe/Tools-framework/tree/master/tomcat-redis-session-manager-8.5/issues'
           system 'GitHub Issues'
         }
 
         scm {
-          url 'https://github.com:jcoleman/tomcat-redis-session-manager'
-          connection 'scm:git:git://github.com/jcoleman/tomcat-redis-session-manager.git'
-          developerConnection 'scm:git:git@github.com:jcoleman/tomcat-redis-session-manager.git'
+          url 'https://github.com/lWoHvYe/Tools-framework/tree/master/tomcat-redis-session-manager-8.5'
+          connection 'scm:git:git://github.com/lWoHvYe/Tools-framework/tree/master/tomcat-redis-session-manager-8.5'
+          developerConnection 'scm:git:git@github.com:lWoHvYe/Tools-framework.git'
         }
 
         licenses {
@@ -91,6 +91,11 @@ uploadArchives {
             name 'James Coleman'
             email 'jtc331@gmail.com'
             url 'https://github.com/jcoleman'
+          }
+          developer {
+            id 'lWoHvYe'
+            name ''
+            url 'https://github.com/lWoHvYe'
           }
         }
       }

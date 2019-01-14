@@ -44,12 +44,12 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
     private final Log log = LogFactory.getLog(RedisSessionManager.class);
 
 //    redis server address
-    protected String host = "192.168.120.110";
+    protected String host = "localhost";
 //    redis port
     protected int port = 6379;
     protected int database = 0;
 //    redis password
-    protected String password = "redis";
+    protected String password = null;
     protected int timeout = Protocol.DEFAULT_TIMEOUT;
     protected String sentinelMaster = null;
     Set<String> sentinelSet = null;
@@ -201,13 +201,9 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
         return jedis;
     }
 
-    protected void returnConnection(Jedis jedis, Boolean error) {
+    protected void returnConnection(Jedis jedis) {
         if (jedis != null)
             jedis.close();
-    }
-
-    protected void returnConnection(Jedis jedis) {
-        returnConnection(jedis, false);
     }
 
     @Override
@@ -325,8 +321,6 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
         RedisSession session = null;
         String sessionId = null;
         String jvmRoute = getJvmRoute();
-
-        Boolean error = true;
         Jedis jedis = null;
         try {
             jedis = acquireConnection();
@@ -349,8 +343,6 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
          This ensures that the save(session) at the end of the request
          will serialize the session into Redis with 'set' instead of 'setnx'. */
 
-            error = false;
-
             if (null != sessionId) {
                 session = (RedisSession) createEmptySession();
                 session.setNew(true);
@@ -368,7 +360,7 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
 
             if (null != session) {
                 try {
-                    error = saveInternal(jedis, session, true);
+                    saveInternal(jedis, session, true);
                 } catch (IOException ex) {
                     log.error("Error saving newly created session: " + ex.getMessage());
                     currentSession.set(null);
@@ -378,7 +370,7 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
             }
         } finally {
             if (jedis != null) {
-                returnConnection(jedis, error);
+                returnConnection(jedis);
             }
         }
 
@@ -441,59 +433,49 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
 
     public void clear() {
         Jedis jedis = null;
-        Boolean error = true;
         try {
             jedis = acquireConnection();
             jedis.flushDB();
-            error = false;
         } finally {
             if (jedis != null) {
-                returnConnection(jedis, error);
+                returnConnection(jedis);
             }
         }
     }
 
     public int getSize() throws IOException {
         Jedis jedis = null;
-        Boolean error = true;
         try {
             jedis = acquireConnection();
             int size = jedis.dbSize().intValue();
-            error = false;
             return size;
         } finally {
             if (jedis != null) {
-                returnConnection(jedis, error);
+                returnConnection(jedis);
             }
         }
     }
 
     public String[] keys() throws IOException {
         Jedis jedis = null;
-        Boolean error = true;
         try {
             jedis = acquireConnection();
             Set<String> keySet = jedis.keys("*");
-            error = false;
             return keySet.toArray(new String[keySet.size()]);
         } finally {
             if (jedis != null) {
-                returnConnection(jedis, error);
+                returnConnection(jedis);
             }
         }
     }
 
     public byte[] loadSessionDataFromRedis(String id) throws IOException {
         Jedis jedis = null;
-        Boolean error = true;
 
         try {
             log.trace("Attempting to load session " + id + " from Redis");
-
             jedis = acquireConnection();
             byte[] data = jedis.get(id.getBytes());
-            error = false;
-
             if (data == null) {
                 log.trace("Session " + id + " not found in Redis");
             }
@@ -501,7 +483,7 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
             return data;
         } finally {
             if (jedis != null) {
-                returnConnection(jedis, error);
+                returnConnection(jedis);
             }
         }
     }
@@ -554,22 +536,20 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
 
     public void save(Session session, boolean forceSave) throws IOException {
         Jedis jedis = null;
-        Boolean error = true;
 
         try {
             jedis = acquireConnection();
-            error = saveInternal(jedis, session, forceSave);
+            saveInternal(jedis, session, forceSave);
         } catch (IOException e) {
             throw e;
         } finally {
             if (jedis != null) {
-                returnConnection(jedis, error);
+                returnConnection(jedis);
             }
         }
     }
 
-    protected boolean saveInternal(Jedis jedis, Session session, boolean forceSave) throws IOException {
-        Boolean error = true;
+    protected void saveInternal(Jedis jedis, Session session, boolean forceSave) throws IOException {
 
         try {
             log.trace("Saving session " + session + " into Redis");
@@ -619,15 +599,9 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
             log.trace("Setting expire timeout on session [" + redisSession.getId() + "] to " + getMaxInactiveInterval());
             jedis.expire(binaryId, getMaxInactiveInterval());
 
-            error = false;
-
-            return error;
         } catch (IOException e) {
             log.error(e.getMessage());
-
             throw e;
-        } finally {
-            return error;
         }
     }
 
@@ -639,17 +613,13 @@ public class RedisSessionManager extends ManagerBase implements Lifecycle {
     @Override
     public void remove(Session session, boolean update) {
         Jedis jedis = null;
-        Boolean error = true;
-
         log.trace("Removing session ID : " + session.getId());
-
         try {
             jedis = acquireConnection();
             jedis.del(session.getId());
-            error = false;
         } finally {
             if (jedis != null) {
-                returnConnection(jedis, error);
+                returnConnection(jedis);
             }
         }
     }
