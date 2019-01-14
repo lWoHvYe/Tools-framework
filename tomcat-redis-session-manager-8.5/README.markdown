@@ -12,7 +12,7 @@ The manager relies on the native expiration capability of Redis to expire keys f
 
 Data stored in the session must be Serializable.
 
-This project changed from https://github.com/jcoleman/tomcat-redis-session-manager ,edit for tomcat 8.5 or later
+This project changed from https://github.com/jcoleman/tomcat-redis-session-manager ,merge for tomcat 8.5 or later
 
 Tomcat Versions
 ---------------
@@ -40,8 +40,7 @@ Add the following into your Tomcat context.xml (or the context block of the serv
              port="6379" <!-- optional: defaults to "6379" -->
              database="0" <!-- optional: defaults to "0" -->
              maxInactiveInterval="60" <!-- optional: defaults to "60" (in seconds) -->
-             password="redis-password"<!-- optional:defaults to null-->
-              />
+             password="redis-password"<!-- optional:defaults to null--> />
 
 The Valve must be declared before the Manager.
 
